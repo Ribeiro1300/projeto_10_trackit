@@ -4,7 +4,7 @@ import React from "react";
 
 import { habits } from "../components/Data";
 
-function renderHabits() {
+function RenderHabits() {
   return (
     <>
       {habits.map((info) => (
@@ -38,14 +38,14 @@ export default function Habits() {
             <div>S</div>
           </Weekdays>
           <BottonButtons>
-            <button>Cancelar</button>
-            <Button onClick={() => setShowNew(false)}>Salvar</Button>
+            <button onClick={() => setShowNew(false)}>Cancelar</button>
+            <Button>Salvar</Button>
           </BottonButtons>
         </NewHabit>
       </MyHabits>
       <HabitsList>
         {!!habits ? (
-          renderHabits()
+          RenderHabits()
         ) : (
           <div>
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
