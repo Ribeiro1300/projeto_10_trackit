@@ -19,11 +19,15 @@ export default function Register() {
       password: password,
     };
 
-    axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
-      info
-    );
-    history.push("/");
+    axios
+      .post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+        info
+      )
+      .then((res) => {
+        if (!!res) setLoadding(true);
+        else history.push("/");
+      });
   }
   return (
     <CreateAccount>

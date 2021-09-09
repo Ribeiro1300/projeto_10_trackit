@@ -21,7 +21,7 @@ export default function Home() {
         info
       )
       .then((res) => SetToken(res.data.token));
-    if (token === "") {
+    if (!!token) {
       setLoadding(true);
     } else history.push("/habitos");
   }

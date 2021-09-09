@@ -4,13 +4,13 @@ import styled from "styled-components";
 export default function Footer() {
   return (
     <div className="footer">
-      <Link to="/today">
+      <Link to="/habitos">
         <h3>Hábitos</h3>
       </Link>
-      <Link to="/today">
+      <Link to="/hoje">
         <h3>Hoje</h3>
       </Link>
-      <Link to="/today">
+      <Link to="/historico">
         <h3>histórico</h3>
       </Link>
     </div>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
-export default function Today(){
-    return (<div>oi</div>)
+import { Container } from "../styles/Styles";
+export default function Today() {
+  return <Container>oi</Container>;
 }
