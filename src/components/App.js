@@ -7,6 +7,7 @@ import History from "../pages/History";
 import Top from "../components/Top";
 import Footer from "../components/Footer";
 import React from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function App() {
   return (
@@ -18,21 +19,23 @@ export default function App() {
         <Route path="/cadastro">
           <Register />
         </Route>
-        <Route path="/habitos" exact>
-          <Top />
-          <Habits />
-          <Footer />
-        </Route>
-        <Route path="/hoje" exact>
-          <Top />
-          <Today />
-          <Footer />
-        </Route>
-        <Route path="/historico">
-          <Top />
-          <History />
-          <Footer />
-        </Route>
+        <UserContext.Provider>
+          <Route path="/habitos" exact>
+            <Top />
+            <Habits />
+            <Footer />
+          </Route>
+          <Route path="/hoje" exact>
+            <Top />
+            <Today />
+            <Footer />
+          </Route>
+          <Route path="/historico">
+            <Top />
+            <History />
+            <Footer />
+          </Route>
+        </UserContext.Provider>
       </Switch>
     </BrowserRouter>
   );
