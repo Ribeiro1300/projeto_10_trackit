@@ -21,7 +21,7 @@ export default function Today() {
   const [habit, setHabit] = useState([]);
   const { user, setUser } = useContext(UserContext);
 
-  function RenderTodaysHabits() {
+  function GetTodaysHabits() {
     useEffect(() => {
       const config = {
         headers: {
@@ -41,19 +41,29 @@ export default function Today() {
     return (
       <TodaysHabits>
         {habit.map((info) => (
-          <SingleHabit>
-            <div>
-              <div>{info.name}</div>
-              <div>Sequeência atual: {info.currentSequence} dias</div>
-              <div>Seu recorde: {info.highestSequence} dias</div>
-            </div>
-            <Check
-              isChecked={info.done}
-              onClick={() => (info.done ? uncheck(info) : check(info))}
-            ></Check>
-          </SingleHabit>
+          <RenderTodaysHabits habit={info}></RenderTodaysHabits>
         ))}
       </TodaysHabits>
+    );
+  }
+  function RenderTodaysHabits({ habit }) {
+    const [isChecked, setIsChecked] = useState(habit.done);
+    return (
+      <SingleHabit>
+        <div>
+          <div>{habit.name}</div>
+          <div>Sequência atual: {habit.currentSequence} dias</div>
+          <div>Seu recorde: {habit.highestSequence} dias</div>
+        </div>
+        <Check
+          isChecked={isChecked}
+          onClick={() =>
+            isChecked
+              ? uncheck(habit, setIsChecked(false))
+              : check(habit, setIsChecked(true))
+          }
+        ></Check>
+      </SingleHabit>
     );
   }
   function check(habit) {
@@ -62,12 +72,12 @@ export default function Today() {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    axios
-      .post(
-        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`,
-        config
-      )
-      .then((res) => console.log);
+    const body = {};
+    axios.post(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`,
+      body,
+      config
+    );
   }
   function uncheck(habit) {
     const config = {
@@ -75,8 +85,11 @@ export default function Today() {
         Authorization: `Bearer ${user.token}`,
       },
     };
+    const body = {};
+
     axios.post(
       `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`,
+      body,
       config
     );
   }
@@ -86,7 +99,7 @@ export default function Today() {
         <h2>{weekday + ", " + day + "/" + month}</h2>
         <p></p>
       </TodaysDate>
-      {RenderTodaysHabits()}
+      {GetTodaysHabits()}
     </Container>
   );
 }

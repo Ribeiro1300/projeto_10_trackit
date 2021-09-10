@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 
@@ -6,7 +7,9 @@ export default function Top() {
   const { user, setUser } = useContext(UserContext);
   return (
     <TopBar>
-      <h1>Trackit</h1>
+      <Link to="/">
+        <h1>Trackit</h1>
+      </Link>
       <img src={user.image}></img>
     </TopBar>
   );
@@ -33,5 +36,8 @@ const TopBar = styled.div`
     height: 70px;
     border-radius: 100px;
     margin: 20px;
+  }
+  a {
+    text-decoration: none;
   }
 `;
