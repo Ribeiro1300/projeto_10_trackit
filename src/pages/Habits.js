@@ -1,21 +1,82 @@
 import styled from "styled-components";
-import { Container, Button } from "../styles/Styles";
-import React from "react";
-
-import { habits } from "../components/Data";
-
-function RenderHabits() {
-  return (
-    <>
-      {habits.map((info) => (
-        <UserHabit>{info.name}</UserHabit>
-      ))}
-    </>
-  );
-}
+import { Container, Button, Input } from "../styles/Styles";
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
+import axios from "axios";
 
 export default function Habits() {
-  const [showNew, setShowNew] = React.useState(false);
+  const history = useHistory();
+
+  const [showNew, setShowNew] = useState(false);
+  const { user, setUser } = useContext(UserContext);
+  const [newHabit, setNewHabit] = useState("");
+  const [isLoadding, setIsLoadding] = useState(false);
+  const [habits, setHabits] = useState([]);
+
+  function RenderHabits() {
+    useEffect(() => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      axios
+        .get(
+          "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+          config
+        )
+        .then((res) => {
+          setHabits(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => console.log);
+    }, []);
+    return (
+      <>
+        {habits.map((info) => (
+          <UserHabit>
+            {info.name}
+            <ion-icon
+              onClick={() => deleteHabit(info)}
+              name="trash-outline"
+            ></ion-icon>
+          </UserHabit>
+        ))}
+      </>
+    );
+  }
+  function createHabit() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    const body = {
+      name: newHabit,
+      days: [1, 3, 5], // segunda, quarta e sexta
+    };
+    axios
+      .post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        body,
+        config
+      )
+      .then((res) => console.log(res));
+    setShowNew(false);
+    history.push("/habitos");
+  }
+  function deleteHabit(habit) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    axios.delete(
+      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`,
+      config
+    );
+  }
   return (
     <Container>
       <MyHabits>
@@ -27,7 +88,12 @@ export default function Habits() {
           ></ion-icon>
         </TopButtons>
         <NewHabit showNew={showNew}>
-          <input></input>
+          <Input
+            loadding={isLoadding}
+            onChange={(e) => setNewHabit(e.target.value)}
+            value={newHabit}
+            placeholder="nome do hábito"
+          ></Input>
           <Weekdays>
             <div>D</div>
             <div>S</div>
@@ -39,7 +105,7 @@ export default function Habits() {
           </Weekdays>
           <BottonButtons>
             <button onClick={() => setShowNew(false)}>Cancelar</button>
-            <Button>Salvar</Button>
+            <Button onClick={createHabit}>Salvar</Button>
           </BottonButtons>
         </NewHabit>
       </MyHabits>

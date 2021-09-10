@@ -8,7 +8,7 @@ const Input = styled.input`
 `;
 
 const Container = styled.div`
-  margin: 120px 20px;
+  margin: 120px 20px 70px 20px;
 `;
 
 export { Button, Input, Container };

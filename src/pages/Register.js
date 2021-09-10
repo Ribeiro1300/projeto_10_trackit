@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import { Button, Input } from "../styles/Styles";
 export default function Register() {
   const history = useHistory();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [name, setName] = useState();
-  const [img, setImg] = useState();
-  const [loadding, setLoadding] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [img, setImg] = useState("");
+  const [isLoadding, setIsLoadding] = useState(false);
 
   function register() {
     const info = {
@@ -25,42 +25,45 @@ export default function Register() {
         info
       )
       .then((res) => {
-        if (!!res) setLoadding(true);
-        else history.push("/");
-      });
+        // if (!!res) setIsLoadding(true);
+        // else history.push("/");
+        console.log(res.data);
+        history.push("/");
+      })
+      .catch((err) => console.log);
   }
   return (
     <CreateAccount>
       <img src="./trackit.png"></img>
-      <form>
-        <Input
-          loadding={loadding}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
-        ></Input>
-        <Input
-          loadding={loadding}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="senha"
-        ></Input>
-        <Input
-          loadding={loadding}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="nome"
-        ></Input>
-        <Input
-          loadding={loadding}
-          value={img}
-          onChange={(e) => setImg(e.target.value)}
-          placeholder="foto"
-        ></Input>
-        <Button loadding={loadding} onClick={register}>
-          Cadastrar
-        </Button>
-      </form>
+      <Input
+        loadding={isLoadding}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="email"
+        disabled={isLoadding}
+      ></Input>
+      <Input
+        loadding={isLoadding}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="senha"
+        type="password"
+      ></Input>
+      <Input
+        loadding={isLoadding}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="nome"
+      ></Input>
+      <Input
+        loadding={isLoadding}
+        value={img}
+        onChange={(e) => setImg(e.target.value)}
+        placeholder="foto"
+      ></Input>
+      <Button loadding={isLoadding} onClick={register}>
+        Cadastrar
+      </Button>
       <Link to="/">Já tem conta? Faça login!</Link>
     </CreateAccount>
   );

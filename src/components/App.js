@@ -10,16 +10,18 @@ import React from "react";
 import UserContext from "../contexts/UserContext";
 
 export default function App() {
+  const [user, setUser] = React.useState({});
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route path="/cadastro">
-          <Register />
-        </Route>
-        <UserContext.Provider>
+    <UserContext.Provider value={{ user, setUser }}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route path="/cadastro" exact>
+            <Register />
+          </Route>
+
           <Route path="/habitos" exact>
             <Top />
             <Habits />
@@ -35,8 +37,8 @@ export default function App() {
             <History />
             <Footer />
           </Route>
-        </UserContext.Provider>
-      </Switch>
-    </BrowserRouter>
+        </Switch>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }

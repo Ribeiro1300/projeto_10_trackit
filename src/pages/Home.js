@@ -1,51 +1,58 @@
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import UserContext from "../contexts/UserContext";
 import axios from "axios";
-import { Button, Input, a } from "../styles/Styles";
+import { Button, Input } from "../styles/Styles";
 
 export default function Home() {
   const history = useHistory();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [token, SetToken] = useState("");
-  const [loadding, setLoadding] = useState(false);
+  const { user, setUser } = useContext(UserContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoadding, setIsLoadding] = useState(false);
   function login() {
-    const info = {
+    const body = {
       email: email,
       password: password,
     };
     axios
       .post(
         "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
-        info
+        body
       )
-      .then((res) => SetToken(res.data.token));
-    if (!!token) {
-      setLoadding(true);
-    } else history.push("/habitos");
+      .then((res) => {
+        setUser(res.data);
+        console.log(user);
+        history.push("/habitos");
+        // if (res != undefined) {
+        //   setIsLoadding(true);
+        // } else {
+        //   history.push("/habitos");
+        //   console.log(user);
+        // }
+      })
+      .catch((erro) => console.log);
   }
   return (
     <Login>
       <img src="./trackit.png"></img>
-      <form>
-        <Input
-          loadding={loadding}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          placeholder="email"
-        ></Input>
-        <Input
-          loadding={loadding}
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          placeholder="senha"
-        ></Input>
-        <Button loadding={loadding} onClick={login}>
-          Entrar
-        </Button>
-      </form>
+      <Input
+        loadding={isLoadding}
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+        placeholder="email"
+      ></Input>
+      <Input
+        loadding={isLoadding}
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+        type="password"
+        placeholder="senha"
+      ></Input>
+      <Button loadding={isLoadding} onClick={login}>
+        Entrar
+      </Button>
       <Link to="/cadastro">Não tem conta? Cadastre-se!</Link>
     </Login>
   );
