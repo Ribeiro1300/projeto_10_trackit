@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function Top() {
+  const { user, setUser } = useContext(UserContext);
   return (
     <TopBar>
       <h1>Trackit</h1>
-      <img src="./trackit.png"></img>
+      <img src={user.image}></img>
     </TopBar>
   );
 }

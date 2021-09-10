@@ -23,7 +23,6 @@ export default function Home() {
       )
       .then((res) => {
         setUser(res.data);
-        console.log(user);
         history.push("/habitos");
         // if (res != undefined) {
         //   setIsLoadding(true);

@@ -28,7 +28,6 @@ export default function Habits() {
         )
         .then((res) => {
           setHabits(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log);
     }, []);
@@ -54,7 +53,7 @@ export default function Habits() {
     };
     const body = {
       name: newHabit,
-      days: [1, 3, 5], // segunda, quarta e sexta
+      days: [0, 1, 2, 3, 4, 5, 6], // segunda, quarta e sexta
     };
     axios
       .post(
@@ -62,9 +61,11 @@ export default function Habits() {
         body,
         config
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        setHabits([...habits, res.data]);
+        console.log(habits);
+      });
     setShowNew(false);
-    history.push("/habitos");
   }
   function deleteHabit(habit) {
     const config = {
@@ -72,10 +73,12 @@ export default function Habits() {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    axios.delete(
-      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`,
-      config
-    );
+    axios
+      .delete(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`,
+        config
+      )
+      .then((res) => setHabits(habits.filter((info) => info != habit)));
   }
   return (
     <Container>
@@ -95,13 +98,13 @@ export default function Habits() {
             placeholder="nome do hábito"
           ></Input>
           <Weekdays>
-            <div>D</div>
-            <div>S</div>
-            <div>T</div>
-            <div>Q</div>
-            <div>Q</div>
-            <div>S</div>
-            <div>S</div>
+            <Day>D</Day>
+            <Day>S</Day>
+            <Day>T</Day>
+            <Day>Q</Day>
+            <Day>Q</Day>
+            <Day>S</Day>
+            <Day>S</Day>
           </Weekdays>
           <BottonButtons>
             <button onClick={() => setShowNew(false)}>Cancelar</button>
@@ -157,13 +160,13 @@ const Weekdays = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  div {
-    width: 20px;
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+`;
+const Day = styled.div`
+  width: 20px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const BottonButtons = styled.div`
   display: flex;
