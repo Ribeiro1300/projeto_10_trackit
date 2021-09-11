@@ -7,6 +7,7 @@ import axios from "axios";
 
 export default function Habits() {
   const history = useHistory();
+  const weekdaysList = ["D", "S", "T", "Q", "Q", "S", "S"];
 
   const [showNew, setShowNew] = useState(false);
   const { user, setUser } = useContext(UserContext);
@@ -14,23 +15,23 @@ export default function Habits() {
   const [isLoadding, setIsLoadding] = useState(false);
   const [habits, setHabits] = useState([]);
 
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    axios
+      .get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        config
+      )
+      .then((res) => {
+        setHabits(res.data);
+      })
+      .catch((err) => console.log);
+  }, []);
   function RenderHabits() {
-    useEffect(() => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      axios
-        .get(
-          "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
-          config
-        )
-        .then((res) => {
-          setHabits(res.data);
-        })
-        .catch((err) => console.log);
-    }, []);
     return (
       <>
         {habits.map((info) => (
@@ -66,6 +67,7 @@ export default function Habits() {
         console.log(habits);
       });
     setShowNew(false);
+    setNewHabit("");
   }
   function deleteHabit(habit) {
     const config = {
@@ -80,6 +82,20 @@ export default function Habits() {
       )
       .then((res) => setHabits(habits.filter((info) => info != habit)));
   }
+  function RenderWeekdays(props) {
+    const [isSelected, setIsSelected] = useState(false);
+    console.log(props.day);
+    return (
+      // <Day
+      //   isSelected={isSelected}
+      //   onClick={isSelected ? setIsSelected(false) : setIsSelected(true)}
+      // >
+      //   {props.day}
+      // </Day>
+      <div></div>
+    );
+  }
+  console.log(user);
   return (
     <Container>
       <MyHabits>
@@ -98,13 +114,9 @@ export default function Habits() {
             placeholder="nome do hábito"
           ></Input>
           <Weekdays>
-            <Day>D</Day>
-            <Day>S</Day>
-            <Day>T</Day>
-            <Day>Q</Day>
-            <Day>Q</Day>
-            <Day>S</Day>
-            <Day>S</Day>
+            {weekdaysList.map((info) => (
+              <RenderWeekdays day={info} />
+            ))}
           </Weekdays>
           <BottonButtons>
             <button onClick={() => setShowNew(false)}>Cancelar</button>
@@ -113,8 +125,8 @@ export default function Habits() {
         </NewHabit>
       </MyHabits>
       <HabitsList>
-        {!!habits ? (
-          RenderHabits()
+        {!(habits.length === 0) ? (
+          <RenderHabits />
         ) : (
           <div>
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
@@ -167,6 +179,7 @@ const Day = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${(props) => (props.isSelected ? "#CFCFCF" : "white")};
 `;
 const BottonButtons = styled.div`
   display: flex;

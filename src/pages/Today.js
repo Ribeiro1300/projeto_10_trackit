@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Container } from "../styles/Styles";
 import React, { useState, useEffect, useContext } from "react";
 import UserContext from "../contexts/UserContext";
+import PercentageContext from "../contexts/PercentageContext";
 import axios from "axios";
 export default function Today() {
   const weekdays = [
@@ -20,6 +21,7 @@ export default function Today() {
 
   const [habit, setHabit] = useState([]);
   const { user, setUser } = useContext(UserContext);
+  const { percentage, setPercentage } = useContext(PercentageContext);
 
   function GetTodaysHabits() {
     useEffect(() => {
@@ -38,6 +40,14 @@ export default function Today() {
         })
         .catch((err) => console.log);
     }, []);
+    let habitsDone = 0;
+    habit.map((info) => {
+      if (info.done) {
+        habitsDone++;
+      }
+    });
+    let result = habitsDone / habit.length;
+    setPercentage((result * 100).toFixed());
     return (
       <TodaysHabits>
         {habit.map((info) => (
@@ -46,8 +56,19 @@ export default function Today() {
       </TodaysHabits>
     );
   }
+  function updatePercentage() {
+    let habitsDone = 0;
+    habit.map((info) => {
+      if (info.done) {
+        habitsDone++;
+      }
+    });
+    let result2 = habitsDone / habit.length;
+    setPercentage((result2 * 100).toFixed());
+  }
   function RenderTodaysHabits({ habit }) {
     const [isChecked, setIsChecked] = useState(habit.done);
+
     return (
       <SingleHabit>
         <div>
@@ -57,11 +78,12 @@ export default function Today() {
         </div>
         <Check
           isChecked={isChecked}
-          onClick={() =>
+          onClick={() => {
             isChecked
               ? uncheck(habit, setIsChecked(false))
-              : check(habit, setIsChecked(true))
-          }
+              : check(habit, setIsChecked(true));
+            updatePercentage();
+          }}
         ></Check>
       </SingleHabit>
     );
