@@ -21,8 +21,9 @@ export default function Footer() {
             backgroundPadding={6}
             style={{ width: 10, height: 2 }}
             styles={buildStyles({
-              backgroundColor: "#3e98c7",
+              backgroundColor: "#52B6FF",
               textColor: "#fff",
+              textSize: "25px",
               pathColor: "#fff",
               trailColor: "transparent",
             })}
@@ -30,7 +31,7 @@ export default function Footer() {
         </Progress>
       </Link>
       <Link to="/historico">
-        <h3>histórico</h3>
+        <h3>Histórico</h3>
       </Link>
     </BottomLinks>
   );
@@ -45,6 +46,12 @@ const BottomLinks = styled.div`
   justify-content: space-between;
   align-items: center;
   background-color: white;
+  padding: 10px;
+  h3 {
+    color: #52b6ff;
+    font-size: 30px;
+    margin: 10px;
+  }
 
   a {
     text-decoration: none;

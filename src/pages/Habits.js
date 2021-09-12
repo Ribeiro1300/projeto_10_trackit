@@ -154,18 +154,36 @@ const MyHabits = styled.div`
 const TopButtons = styled.div`
   display: flex;
   justify-content: space-between;
+  h2 {
+    color: #126ba5;
+  }
 `;
 const NewHabit = styled.div`
   background-color: white;
   display: ${(props) => (props.showNew ? "flex" : "none")};
   flex-direction: column;
   margin: 20px 0px;
+  padding: 10px;
+  input {
+    width: 100%;
+    height: 40px;
+    font-size: 25px;
+    text-align: center;
+  }
 `;
 
 const HabitsList = styled.div``;
 
 const UserHabit = styled.div`
   background-color: white;
+  display: flex;
+  justify-content: space-between;
+  font-size: 25px;
+  padding: 15px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  ion-icon {
+  }
 `;
 
 const Weekdays = styled.div`
@@ -184,4 +202,9 @@ const Day = styled.div`
 const BottonButtons = styled.div`
   display: flex;
   justify-content: flex-end;
+  button:first-child {
+    background-color: white;
+    border: none;
+    color: #52b6ff;
+  }
 `;

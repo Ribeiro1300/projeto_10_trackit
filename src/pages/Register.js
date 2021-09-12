@@ -70,7 +70,31 @@ export default function Register() {
 }
 
 const CreateAccount = styled.div`
+  display: flex;
+  justify-content: space-baseline;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  input {
+    margin: 5px;
+    width: 80%;
+    height: 40px;
+    border: 1px solid #d5d5d5;
+    border-radius: 5px;
+  }
+  button {
+    font-size: 25px;
+    margin: 5px;
+    width: 80%;
+    height: 40px;
+    color: white;
+    background-color: #52b6ff;
+    border: none;
+    border-radius: 10px;
+  }
   a {
-    color: currentColor;
+    color: #52b6ff;
   }
 `;

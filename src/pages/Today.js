@@ -72,9 +72,9 @@ export default function Today() {
     return (
       <SingleHabit>
         <div>
-          <div>{habit.name}</div>
-          <div>Sequência atual: {habit.currentSequence} dias</div>
-          <div>Seu recorde: {habit.highestSequence} dias</div>
+          <h3>{habit.name}</h3>
+          <p>Sequência atual: {habit.currentSequence} dias</p>
+          <p>Seu recorde: {habit.highestSequence} dias</p>
         </div>
         <Check
           isChecked={isChecked}
@@ -84,7 +84,9 @@ export default function Today() {
               : check(habit, setIsChecked(true));
             updatePercentage();
           }}
-        ></Check>
+        >
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </Check>
       </SingleHabit>
     );
   }
@@ -119,23 +121,55 @@ export default function Today() {
     <Container>
       <TodaysDate>
         <h2>{weekday + ", " + day + "/" + month}</h2>
-        <p></p>
+        <p>
+          {percentage == 0
+            ? "Nenhum hábito concluído ainda"
+            : `${percentage}% dos hábitos concluídos`}
+        </p>
       </TodaysDate>
-      {GetTodaysHabits()}
+      <GetTodaysHabits />
     </Container>
   );
 }
-const TodaysDate = styled.div``;
+const TodaysDate = styled.div`
+  h2 {
+    color: #126ba5;
+    font-size: 30px;
+  }
+`;
 const TodaysHabits = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 `;
 const Check = styled.div`
   width: 100px;
   height: 100px;
-  background-color: ${(props) => (props.isChecked ? "green" : "gray")};
+  margin: 10px;
+  background-color: ${(props) => (props.isChecked ? "#8FC549" : "#EBEBEB")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  ion-icon {
+    font-size: 70px;
+    color: white;
+  }
 `;
 const SingleHabit = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: white;
+  margin: 10px 0px;
+  border-radius: 10px;
+  padding: 10px;
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  h3 {
+    font-size: 30px;
+    margin: 10px 0px 20px 0px;
+  }
 `;
